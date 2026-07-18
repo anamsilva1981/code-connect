@@ -6,13 +6,17 @@ import SocialLoginOption from '../molecules/SocialLoginOption'
 
 function SignupForm() {
   return (
-    <form className="auth-form signup-form">
-      <div className="auth-form__header">
-        <h1>Cadastro</h1>
-        <p>Olá! Preencha seus dados.</p>
+    <form className="grid w-full gap-6 text-left text-code-offwhite">
+      <div className="grid gap-6">
+        <h1 className="m-0 text-3xl font-semibold leading-normal text-code-offwhite">
+          Cadastro
+        </h1>
+        <p className="m-0 text-xl leading-normal text-code-offwhite">
+          Olá! Preencha seus dados.
+        </p>
       </div>
 
-      <div className="auth-form__fields">
+      <div className="grid gap-4">
         <AuthInput
           autoComplete="name"
           id="name"
@@ -41,7 +45,7 @@ function SignupForm() {
         />
       </div>
 
-      <div className="auth-form__meta auth-form__meta--signup">
+      <div className="-mt-4 flex items-center justify-between gap-4 max-[480px]:flex-col max-[480px]:items-start max-[480px]:gap-2.5">
         <AuthCheckbox defaultChecked id="signup-remember" label="Lembrar-me" name="remember" />
       </div>
 
@@ -52,16 +56,24 @@ function SignupForm() {
 
       <AuthDivider>ou entre com outras contas</AuthDivider>
 
-      <div className="auth-form__social">
+      <div className="flex justify-center gap-6">
         <SocialLoginOption label="Github" logoSrc="/github.png" />
         <SocialLoginOption label="Gmail" logoSrc="/google.png" />
       </div>
 
-      <div className="auth-form__footer signup-form__login">
-        <p>Já tem conta?</p>
-        <a href="/login">
+      <div className="flex items-center gap-2 max-[760px]:flex-col max-[760px]:items-start">
+        <p className="m-0 whitespace-nowrap text-lg leading-normal text-code-offwhite">
+          Já tem conta?
+        </p>
+        <a
+          className="inline-flex items-center gap-3 whitespace-nowrap text-lg leading-normal text-code-accent no-underline hover:underline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-code-accent"
+          href="/login"
+        >
           Faça seu login!
-          <span className="auth-form__login-icon" aria-hidden="true"></span>
+          <span
+            className="relative size-[18px] rounded border-2 border-code-accent before:absolute before:top-2 before:-left-2 before:h-0.5 before:w-2 before:bg-code-accent after:absolute after:top-1 after:-left-0.5 after:size-2 after:rotate-45 after:border-t-2 after:border-r-2 after:border-code-accent"
+            aria-hidden="true"
+          ></span>
         </a>
       </div>
     </form>

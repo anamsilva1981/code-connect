@@ -16,6 +16,7 @@
     "lint": "pnpm -r lint",
     "lint:web": "pnpm --filter web lint",
     "lint:api": "pnpm --filter api lint",
+    "test:a11y:web": "pnpm --filter web test:a11y",
     "test:web": "pnpm --filter web test",
     "test:api": "pnpm --filter api test",
     "preview:web": "pnpm --filter web preview",

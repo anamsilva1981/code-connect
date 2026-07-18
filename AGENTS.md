@@ -27,6 +27,10 @@ Use the existing style in each app. Frontend files use ES modules, function comp
 
 Frontend components should follow Atomic Design: atoms, molecules, organisms, templates, and pages. Name components in `PascalCase`, hooks as `useSomething`, and helpers in `camelCase`. Prefer Tailwind utilities for new UI; keep custom CSS for global styles or cases Tailwind cannot express cleanly.
 
+For frontend colors, define and reuse the project palette through Tailwind theme tokens, currently in `apps/web/src/index.css` via `@theme`. Do not use hex colors directly in JSX/Tailwind arbitrary color classes such as `text-[#...]`, `bg-[#...]`, or `border-[#...]`; add or reuse semantic `code-*` color tokens instead. Raw hex values should live only in the palette/theme definition or source assets such as SVGs.
+
+For font sizes, use the closest Tailwind size token (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl`, etc.) instead of custom pixel/rem classes like `text-[15px]` or CSS `font-size`. Only use arbitrary font sizes when a component has a documented, non-negotiable design requirement and no reasonable token match exists.
+
 Backend code must stay REST-oriented. Model resources with nouns, use HTTP verbs consistently, return appropriate status codes, keep controllers thin, validate DTOs, and avoid action routes such as `/createUser` when `POST /users` fits. In NestJS, keep suffixes like `.controller.ts`, `.service.ts`, `.module.ts`, and `.spec.ts`.
 
 The API uses ESLint with Prettier integration. The web app uses `oxlint`.

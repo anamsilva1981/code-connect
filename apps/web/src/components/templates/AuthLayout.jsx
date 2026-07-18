@@ -1,4 +1,11 @@
-function AuthLayout({ bannerAlt, bannerSrc, children }) {
+function AuthLayout({
+  bannerAlt,
+  bannerHeight,
+  bannerSources = [],
+  bannerSrc,
+  bannerWidth,
+  children,
+}) {
   return (
     <main className="relative grid min-h-svh place-items-center overflow-hidden bg-code-graphite p-6 text-code-offwhite max-[760px]:block max-[760px]:p-4">
       <div
@@ -15,11 +22,20 @@ function AuthLayout({ bannerAlt, bannerSrc, children }) {
         aria-label="Autenticação"
       >
         <div className="min-w-0">
-          <img
-            className="block h-[675px] w-full object-cover max-[1080px]:h-[560px] max-[760px]:h-auto max-[760px]:max-h-[420px] max-[760px]:object-top"
-            src={bannerSrc}
-            alt={bannerAlt}
-          />
+          <picture>
+            {bannerSources.map((source) => (
+              <source key={source.srcSet} {...source} />
+            ))}
+            <img
+              className="block h-[675px] w-full object-cover max-[1080px]:h-[560px] max-[760px]:h-auto max-[760px]:max-h-[420px] max-[760px]:object-top"
+              src={bannerSrc}
+              alt={bannerAlt}
+              width={bannerWidth}
+              height={bannerHeight}
+              fetchPriority="high"
+              decoding="async"
+            />
+          </picture>
         </div>
 
         <div className="min-w-0 max-[760px]:w-full">{children}</div>

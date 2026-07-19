@@ -19,6 +19,9 @@ Run commands from the repository root unless noted.
 - `pnpm lint`: run each app's lint task.
 - `pnpm test:api`: run API unit tests with Jest.
 - `pnpm --filter api test:e2e`: run Nest e2e tests.
+- `docker compose up -d postgres`: start the local PostgreSQL database with a persistent Docker volume.
+- `pnpm --filter api prisma:migrate`: apply Prisma migrations to the local PostgreSQL database.
+- `pnpm --filter api prisma:generate`: regenerate the Prisma Client after schema changes.
 - `pnpm preview:web`: preview the built Vite app.
 
 ## Coding Style & Naming Conventions
@@ -32,6 +35,8 @@ For frontend colors, define and reuse the project palette through Tailwind theme
 For font sizes, use the closest Tailwind size token (`text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl`, etc.) instead of custom pixel/rem classes like `text-[15px]` or CSS `font-size`. Only use arbitrary font sizes when a component has a documented, non-negotiable design requirement and no reasonable token match exists.
 
 Backend code must stay REST-oriented. Model resources with nouns, use HTTP verbs consistently, return appropriate status codes, keep controllers thin, validate DTOs, and avoid action routes such as `/createUser` when `POST /users` fits. In NestJS, keep suffixes like `.controller.ts`, `.service.ts`, `.module.ts`, and `.spec.ts`.
+
+The API persists data with PostgreSQL and Prisma. Keep Prisma schema and migrations under `apps/api/prisma`, use `PrismaService` for database access, and do not introduce in-memory stores for data that must survive process restarts.
 
 The API uses ESLint with Prettier integration. The web app uses `oxlint`.
 

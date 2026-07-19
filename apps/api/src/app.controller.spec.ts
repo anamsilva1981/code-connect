@@ -15,8 +15,11 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return the API health payload', () => {
+      expect(appController.getHealth()).toEqual({
+        status: 'ok',
+        name: 'Code Connect API',
+      });
     });
   });
 });

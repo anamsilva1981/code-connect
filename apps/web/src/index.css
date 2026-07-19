@@ -10,6 +10,8 @@
   --color-code-offwhite: #e1e1e1;
   --color-code-field: #888888;
   --color-code-field-focus: #9a9a9a;
+  --color-code-gray-dark: #3e3e3f;
+  --color-code-gray-light: #bcbcbc;
   --color-code-accent: #81fe88;
   --color-code-accent-hover: #9aff9f;
 }

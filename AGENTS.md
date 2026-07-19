@@ -22,6 +22,7 @@ Run commands from the repository root unless noted.
 - `docker compose up -d postgres`: start the local PostgreSQL database with a persistent Docker volume.
 - `pnpm --filter api prisma:migrate`: apply Prisma migrations to the local PostgreSQL database.
 - `pnpm --filter api prisma:generate`: regenerate the Prisma Client after schema changes.
+- `pnpm --filter api prisma:seed`: populate the local PostgreSQL database with mock users and posts.
 - `pnpm preview:web`: preview the built Vite app.
 
 ## Coding Style & Naming Conventions

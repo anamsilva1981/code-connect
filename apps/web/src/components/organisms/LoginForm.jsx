@@ -1,12 +1,120 @@
+import { useState } from 'react'
 import AuthButton from '../atoms/AuthButton'
 import AuthCheckbox from '../atoms/AuthCheckbox'
 import AuthInput from '../atoms/AuthInput'
 import AuthDivider from '../molecules/AuthDivider'
 import SocialLoginOption from '../molecules/SocialLoginOption'
+import {
+  clearSession,
+  getAuthErrorMessage,
+  getProfile,
+  getStoredSession,
+  login,
+} from '../../services/authApi'
 
 function LoginForm() {
+  const [session, setSession] = useState(() => getStoredSession())
+  const [errorMessage, setErrorMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isRefreshingProfile, setIsRefreshingProfile] = useState(false)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setErrorMessage('')
+    setIsSubmitting(true)
+
+    const formData = new FormData(event.currentTarget)
+
+    try {
+      const response = await login({
+        email: String(formData.get('user') ?? ''),
+        password: String(formData.get('password') ?? ''),
+      })
+
+      setSession({
+        accessToken: response.accessToken,
+        user: response.user,
+      })
+    } catch (error) {
+      setErrorMessage(
+        getAuthErrorMessage(error, 'Nao foi possivel fazer login. Confira seus dados.'),
+      )
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleRefreshProfile = async () => {
+    setErrorMessage('')
+    setIsRefreshingProfile(true)
+
+    try {
+      const user = await getProfile()
+
+      setSession((currentSession) => ({
+        ...currentSession,
+        user,
+      }))
+    } catch (error) {
+      setErrorMessage(
+        getAuthErrorMessage(error, 'Sua sessao expirou. Faca login novamente.'),
+      )
+    } finally {
+      setIsRefreshingProfile(false)
+    }
+  }
+
+  const handleLogout = () => {
+    clearSession()
+    setSession({
+      accessToken: null,
+      user: null,
+    })
+    setErrorMessage('')
+  }
+
+  if (session.user) {
+    return (
+      <section className="grid w-full gap-6 text-left text-code-offwhite">
+        <div className="grid gap-3">
+          <h1 className="m-0 text-3xl font-semibold leading-normal text-code-offwhite">
+            Login
+          </h1>
+          <p className="m-0 text-xl leading-normal text-code-offwhite">
+            Voce esta conectado.
+          </p>
+        </div>
+
+        <div className="grid gap-2 rounded-lg bg-code-field/20 p-4 text-code-offwhite">
+          <strong className="text-lg">{session.user.name}</strong>
+          <span className="text-sm">{session.user.email}</span>
+        </div>
+
+        {errorMessage ? (
+          <p className="m-0 rounded bg-red-950/70 p-3 text-sm text-code-offwhite" role="alert">
+            {errorMessage}
+          </p>
+        ) : null}
+
+        {session.accessToken ? (
+          <AuthButton
+            disabled={isRefreshingProfile}
+            onClick={handleRefreshProfile}
+            type="button"
+          >
+            {isRefreshingProfile ? 'Atualizando...' : 'Atualizar perfil'}
+          </AuthButton>
+        ) : null}
+
+        <AuthButton onClick={handleLogout} type="button">
+          Sair
+        </AuthButton>
+      </section>
+    )
+  }
+
   return (
-    <form className="grid w-full gap-6 text-left text-code-offwhite">
+    <form className="grid w-full gap-6 text-left text-code-offwhite" onSubmit={handleSubmit}>
       <div className="grid gap-6">
         <h1 className="m-0 text-3xl font-semibold leading-normal text-code-offwhite">
           Login
@@ -46,8 +154,14 @@ function LoginForm() {
         </a>
       </div>
 
+      {errorMessage ? (
+        <p className="m-0 rounded bg-red-950/70 p-3 text-sm text-code-offwhite" role="alert">
+          {errorMessage}
+        </p>
+      ) : null}
+
       <AuthButton type="submit">
-        Login
+        {isSubmitting ? 'Entrando...' : 'Login'}
         <span aria-hidden="true">-&gt;</span>
       </AuthButton>
 
